@@ -315,21 +315,39 @@ namespace Com.OneSignal
 			#endif
 		}
 
-		public static void PostNotification(Dictionary<string, object> data) {
-			#if ONESIGNAL_PLATFORM
+        public static void PostNotification(Dictionary<string, object> data)
+        {
+#if ONESIGNAL_PLATFORM
 				PostNotification (data, null, null);
-			#endif
-		}
+#endif
+        }
 
-		public static void PostNotification(Dictionary<string, object> data, OnPostNotificationSuccess inOnPostNotificationSuccess, OnPostNotificationFailure inOnPostNotificationFailure) {
-			#if ONESIGNAL_PLATFORM
+        public static void PostNotification(Dictionary<string, object> data, OnPostNotificationSuccess inOnPostNotificationSuccess, OnPostNotificationFailure inOnPostNotificationFailure)
+        {
+#if ONESIGNAL_PLATFORM
          		postNotificationSuccessDelegate = inOnPostNotificationSuccess;
          		postNotificationFailureDelegate = inOnPostNotificationFailure;
          		oneSignalPlatform.PostNotification(data);
-      		#endif
-		}
+#endif
+        }
 
-		public static void SyncHashedEmail(string email) {
+        public static void PostNotification(string jsonString)
+        {
+#if ONESIGNAL_PLATFORM
+				PostNotification (jsonString, null, null);
+#endif
+        }
+
+        public static void PostNotification(string jsonString, OnPostNotificationSuccess inOnPostNotificationSuccess, OnPostNotificationFailure inOnPostNotificationFailure)
+        {
+#if ONESIGNAL_PLATFORM
+         		postNotificationSuccessDelegate = inOnPostNotificationSuccess;
+         		postNotificationFailureDelegate = inOnPostNotificationFailure;
+         		oneSignalPlatform.PostNotification(jsonString);
+#endif
+        }
+
+        public static void SyncHashedEmail(string email) {
      		#if ONESIGNAL_PLATFORM
          		oneSignalPlatform.SyncHashedEmail(email);
       		#endif

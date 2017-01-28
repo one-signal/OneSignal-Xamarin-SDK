@@ -40,7 +40,8 @@ namespace Com.OneSignal
 	    void IdsAvailable();
 	    void SetSubscription(bool enable);
 	    void PostNotification(Dictionary<string, object> data);
-	    void SyncHashedEmail(string email);
+	    void PostNotification(string jsonString);
+            void SyncHashedEmail(string email);
 	    void PromptLocation();
 	}
 }

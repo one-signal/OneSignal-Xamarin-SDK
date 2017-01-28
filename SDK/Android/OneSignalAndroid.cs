@@ -179,6 +179,11 @@ namespace Com.OneSignal
 			Android.OneSignal.PostNotification (Json.Serialize (data), new PostNotificationResponseHandler ());
 		}
 
+		public void PostNotification (string jsonString)
+		{
+			Android.OneSignal.PostNotification (jsonString, new PostNotificationResponseHandler ());
+		}
+
 		public void SyncHashedEmail(string email)
 		{
    		Android.OneSignal.SyncHashedEmail(email);

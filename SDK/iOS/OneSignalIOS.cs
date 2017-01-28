@@ -157,6 +157,11 @@ namespace Com.OneSignal
          string jsonString = Json.Serialize (data);
          iOS.OneSignal.PostNotificationWithJsonString (jsonString, PostNotificationSuccessHandler, PostNotificationFailureHandler);
       }
+	  
+      public void PostNotification (string jsonString)
+      {
+         iOS.OneSignal.PostNotificationWithJsonString (jsonString, PostNotificationSuccessHandler, PostNotificationFailureHandler);
+      }
 
       public void SetLogLevel (OneSignal.LOG_LEVEL logLevel, OneSignal.LOG_LEVEL visualLevel)
       {
