@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Com.OneSignal.Abstractions;
 using OSNotificationOpenedResult = Com.OneSignal.Abstractions.OSNotificationOpenedResult;
 using OSNotification = Com.OneSignal.Abstractions.OSNotification;
@@ -148,6 +149,7 @@ namespace Com.OneSignal
          iOS.OneSignal.IdsAvailable(IdsAvailableHandler);
       }
 
+
       public override void SetSubscription(bool enable)
       {
          iOS.OneSignal.SetSubscription(enable);
@@ -173,7 +175,26 @@ namespace Com.OneSignal
          onIdsAvailable(playerID, pushToken);
       }
 
-      public void NotificationOpenedHandler(iOS.OSNotificationOpenedResult result)
+       public Task<IdsResult> IdsAvailableAsync()
+       {
+           var taskCompletionSource = new TaskCompletionSource<IdsResult>();
+
+           Action<string, string> action = (id, push) =>
+           {
+               var result = new IdsResult()
+               {
+                   PlayerId = id,
+                   PushToken = push
+               };
+               taskCompletionSource.SetResult(result);
+           };
+
+           iOS.OneSignal.IdsAvailable(new IdsAvailableCallback(action));
+
+           return taskCompletionSource.Task;
+       }
+
+        public void NotificationOpenedHandler(iOS.OSNotificationOpenedResult result)
       {
          onPushNotificationOpened(OSNotificationOpenedResultToNative(result));
       }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Com.OneSignal.Abstractions;
 
@@ -58,6 +60,24 @@ namespace Com.OneSignal
         public override void IdsAvailable()
         {
             Android.OneSignal.IdsAvailable(new IdsAvailableHandler());
+        }
+
+        public Task<IdsResult> IdsAvailableAsync()
+        {
+            var taskCompletionSource = new TaskCompletionSource<IdsResult>();
+
+            Action<string, string> action = (id, push) =>
+            {
+                var result = new IdsResult()
+                {
+                    PlayerId = id, PushToken = push
+                };
+                taskCompletionSource.SetResult(result);
+            };
+
+            Android.OneSignal.IdsAvailable(new IdsAvailableCallback(action));
+
+            return taskCompletionSource.Task;
         }
 
         public override void RegisterForPushNotifications() { } // Doesn't apply to Android as the Native SDK always registers with GCM.

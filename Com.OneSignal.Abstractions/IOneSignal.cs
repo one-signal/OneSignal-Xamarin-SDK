@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Com.OneSignal.Abstractions
 {
@@ -14,7 +15,9 @@ namespace Com.OneSignal.Abstractions
       void GetTags(TagsReceived tagsReceivedDelegate);
       void DeleteTag(string key);
       void DeleteTags(IList<string> keys);
+      [Obsolete]
       void IdsAvailable(IdsAvailableCallback idsAvailableCallback);
+      Task<IdsResult> IdsAvailableAsync();
       void SetSubscription(bool enable);
       void PostNotification(Dictionary<string, object> data);
       void SyncHashedEmail(string email);
