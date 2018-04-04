@@ -5,7 +5,7 @@ namespace Com.OneSignal
     {
         public void NotificationReceived(Android.OSNotification notification)
         {
-            (OneSignal.Current as OneSignalImplementation).onPushNotificationReceived(NotificationOpenedHandler.OSNotificationToNative(notification));
+            (OneSignal.Current as OneSignalImplementation).onPushNotificationReceived(notification.ToAbstract());
         }
     }
 }

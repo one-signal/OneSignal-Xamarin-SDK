@@ -5,8 +5,6 @@ namespace Com.OneSignal.Abstractions
 {
    public abstract class OneSignalShared : IOneSignal
    {
-      public TagsReceived tagsReceivedDelegate;
-
       public XamarinBuilder StartInit(string appId)
       {
          if (builder == null)
@@ -20,14 +18,7 @@ namespace Com.OneSignal.Abstractions
       public abstract void SendTags(IDictionary<string, string> tags);
 
 
-      public abstract void GetTags();
-
-      // Makes a request to onesignal.com to get current tags set on the player and then run the callback passed in.
-      public void GetTags(TagsReceived inTagsReceivedDelegate)
-      {
-         tagsReceivedDelegate = inTagsReceivedDelegate;
-         GetTags();
-      }
+      public abstract void GetTags(TagsReceived inTagsReceivedDelegate);
 
       public abstract void DeleteTag(string key);
       public abstract void DeleteTags(IList<string> keys);
@@ -41,36 +32,15 @@ namespace Com.OneSignal.Abstractions
 
 
 
-
-
-     
-      // delegates
-      IdsAvailableCallback idsAvailableDelegate;
-
       // logging
       public LOG_LEVEL logLevel = LOG_LEVEL.INFO, visualLogLevel = LOG_LEVEL.NONE;
-
-      internal OnPostNotificationSuccess postNotificationSuccessDelegate;
-      internal OnPostNotificationFailure postNotificationFailureDelegate;
-
-      internal OnSetEmailSuccess setEmailSuccessDelegate;
-      internal OnSetEmailFailure setEmailFailureDelegate;
-
-      internal OnSetEmailSuccess logoutEmailSuccessDelegate;
-      internal OnSetEmailFailure logoutEmailFailureDelegate;
 
       public XamarinBuilder builder;
 
       // Init - Only required method you call to setup OneSignal to receive push notifications.
       public abstract void InitPlatform();
 
-      public abstract void IdsAvailable();
-
-      public void IdsAvailable(IdsAvailableCallback inIdsAvailableDelegate)
-      {
-         idsAvailableDelegate = inIdsAvailableDelegate;
-         IdsAvailable();
-      }
+      public abstract void IdsAvailable(IdsAvailableCallback inIdsAvailableDelegate);
 
       public virtual void SetLogLevel(LOG_LEVEL ll, LOG_LEVEL vll)
       {
@@ -78,45 +48,14 @@ namespace Com.OneSignal.Abstractions
          visualLogLevel = vll;
       }
 
-      public abstract void PostNotification(Dictionary<string, object> data);
+      public abstract void PostNotification(Dictionary<string, object> data, OnPostNotificationSuccess inOnPostNotificationSuccess, OnPostNotificationFailure inOnPostNotificationFailure);
 
-      public void PostNotification(Dictionary<string, object> data, OnPostNotificationSuccess inOnPostNotificationSuccess, OnPostNotificationFailure inOnPostNotificationFailure)
-      {
-         postNotificationSuccessDelegate = inOnPostNotificationSuccess;
-         postNotificationFailureDelegate = inOnPostNotificationFailure;
+      public abstract void SetEmail(string email, string emailAuthCode, OnSetEmailSuccess inSetEmailSuccess, OnSetEmailFailure inSetEmailFailure);
 
-         PostNotification(data);
-      }
 
-      public abstract void SetEmail(string email, string emailAuthCode);
+      public abstract void SetEmail(string email, OnSetEmailSuccess inSetEmailSuccess, OnSetEmailFailure inSetEmailFailure);
 
-      public void SetEmail(string email, string emailAuthCode, OnSetEmailSuccess inSetEmailSuccess, OnSetEmailFailure inSetEmailFailure) 
-      {
-         setEmailSuccessDelegate = inSetEmailSuccess;
-         setEmailFailureDelegate = inSetEmailFailure;
-
-         SetEmail(email, emailAuthCode);
-      }
-
-      public abstract void SetEmail(string email);
-
-      public void SetEmail(string email, OnSetEmailSuccess inSetEmailSuccess, OnSetEmailFailure inSetEmailFailure) 
-      {
-         setEmailSuccessDelegate = inSetEmailSuccess;
-         setEmailFailureDelegate = inSetEmailFailure;
-         
-         SetEmail(email);
-      }
-
-      public abstract void LogoutEmail();
-
-      public void LogoutEmail(OnSetEmailSuccess inSetEmailSuccess, OnSetEmailFailure inSetEmailFailure)
-      {
-        logoutEmailSuccessDelegate = inSetEmailSuccess;
-        logoutEmailFailureDelegate = inSetEmailFailure;
-
-        LogoutEmail();
-      }
+      public abstract void LogoutEmail(OnSetEmailSuccess inSetEmailSuccess, OnSetEmailFailure inSetEmailFailure);
 
       // Called from the native SDK - Called when a push notification received.
       public void onPushNotificationReceived(OSNotification notification)
@@ -136,85 +75,12 @@ namespace Com.OneSignal.Abstractions
          }
       }
 
-      // Called from the native SDK - Called when device is registered with onesignal.com service or right after IdsAvailable
-      //                          if already registered.
-      public void onIdsAvailable(string userId, string pushToken)
-      {
-         if (idsAvailableDelegate != null)
-         {
-            idsAvailableDelegate(userId, pushToken);
-         }
-      }
+	  public void PostNotification(Dictionary<string, object> data) => PostNotification(data, null, null);
+		 
+	  public void SetEmail(string email, string emailAuthToken) => SetEmail(email, emailAuthToken, null, null);
 
-      // Called from the native SDK - Called After calling GetTags(...)
-      public void onTagsReceived(Dictionary<string, object> dict)
-      {
-         if (tagsReceivedDelegate != null)
-            tagsReceivedDelegate(dict);
-      }
+	  public void SetEmail(string email) => SetEmail(email, null, null);
 
-      // Called from the native SDK
-      public void onPostNotificationSuccess(Dictionary<string, object> response)
-      {
-         if (postNotificationSuccessDelegate != null)
-         {
-            OnPostNotificationSuccess tempPostNotificationSuccessDelegate = postNotificationSuccessDelegate;
-            postNotificationFailureDelegate = null;
-            postNotificationSuccessDelegate = null;
-            tempPostNotificationSuccessDelegate(response);
-         }
-      }
-
-      // Called from the native SDK
-      public void onPostNotificationFailed(Dictionary<string, object> response)
-      {
-         if (postNotificationFailureDelegate != null)
-         {
-            OnPostNotificationFailure tempPostNotificationFailureDelegate = postNotificationFailureDelegate;
-            postNotificationFailureDelegate = null;
-            postNotificationSuccessDelegate = null;
-            tempPostNotificationFailureDelegate(response);
-         }
-      }
-
-      public void onSetEmailSuccess() 
-      {
-         if (setEmailSuccessDelegate != null) {
-            OnSetEmailSuccess tempSuccessDelegate = setEmailSuccessDelegate;
-            setEmailSuccessDelegate = null;
-            setEmailFailureDelegate = null;
-            tempSuccessDelegate();
-         }
-      }
-
-      public void onSetEmailFailed(Dictionary<string, object> error)
-      {
-         if (setEmailFailureDelegate != null) {
-            OnSetEmailFailure tempFailureDelegate = setEmailFailureDelegate;
-            setEmailFailureDelegate = null;
-            setEmailSuccessDelegate = null;
-            tempFailureDelegate(error);
-         }
-      }
-
-      public void onLogoutEmailSuccess()
-      {
-         if (logoutEmailSuccessDelegate != null) {
-            OnSetEmailSuccess tempSuccessDelegate = logoutEmailSuccessDelegate;
-            logoutEmailSuccessDelegate = null;
-            logoutEmailFailureDelegate = null;
-            tempSuccessDelegate();
-         }
-      }
-
-      public void onLogoutEmailFailed(Dictionary<string, object> error)
-      {
-         if (logoutEmailFailureDelegate != null) {
-            OnSetEmailFailure tempFailureDelegate = logoutEmailFailureDelegate;
-            logoutEmailFailureDelegate = null;
-            logoutEmailSuccessDelegate = null;
-            tempFailureDelegate(error);
-         }
-      }
-   }
+	  public void LogoutEmail() => LogoutEmail(null, null);
+	}
 }

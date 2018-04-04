@@ -7,20 +7,35 @@ namespace Com.OneSignal
 {
     public class PostNotificationResponseHandler : Java.Lang.Object, Android.OneSignal.IPostNotificationResponseHandler
     {
+		readonly OnPostNotificationSuccess _success;
+		readonly OnPostNotificationFailure _failure;
+
+		public PostNotificationResponseHandler(OnPostNotificationSuccess success, OnPostNotificationFailure failure)
+		{
+			_success = success;
+			_failure = failure;
+		}
+
         public void OnSuccess(JSONObject jsonObject)
         {
+			if (_success == null)
+				return;
+
             Dictionary<string, object> dict = null;
             if (jsonObject != null)
                 dict = Json.Deserialize(jsonObject.ToString()) as Dictionary<string, object>;
-            (OneSignal.Current as OneSignalImplementation).onPostNotificationSuccess(dict);
+			_success(dict);
         }
 
         public void OnFailure(JSONObject jsonObject)
         {
+			if (_failure == null)
+				return;
+
             Dictionary<string, object> dict = null;
             if (jsonObject != null)
                 dict = Json.Deserialize(jsonObject.ToString()) as Dictionary<string, object>;
-            (OneSignal.Current as OneSignalImplementation).onPostNotificationFailed(dict);
+			_failure(dict);
         }
     }
 }

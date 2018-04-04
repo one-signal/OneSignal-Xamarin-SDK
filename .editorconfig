@@ -1,0 +1,9 @@
+# top-most EditorConfig file
+root = true
+
+# CSharp formatting settings:
+[*.cs]
+indent_style = space
+indent_size = 3
+csharp_preserve_single_line_statements = true
+csharp_preserve_single_line_blocks = true

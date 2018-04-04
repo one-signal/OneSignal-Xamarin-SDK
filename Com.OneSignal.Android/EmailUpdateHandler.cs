@@ -5,18 +5,29 @@ using Org.Json;
 
 namespace Com.OneSignal
 {
-  public class EmailUpdateHandler : Java.Lang.Object, Android.OneSignal.IEmailUpdateHandler
-  {
-    public void OnSuccess()
-    {
-      (OneSignal.Current as OneSignalImplementation).onSetEmailSuccess();
-    }
+	public class EmailUpdateHandler : Java.Lang.Object, Android.OneSignal.IEmailUpdateHandler
+	{
+		readonly OnSetEmailSuccess _success;
+		readonly OnSetEmailFailure _failure;
 
-    public void OnFailure(Android.OneSignal.EmailUpdateError error)
-    {
-      var result = new Dictionary<string, object> () {{"message", error.Message}};
+		public EmailUpdateHandler(OnSetEmailSuccess success, OnSetEmailFailure failure)
+		{
+			_success = success;
+			_failure = failure;
+		}
 
-      (OneSignal.Current as OneSignalImplementation).onPostNotificationFailed(result);
-    }
-  }
+		public void OnSuccess()
+		{
+			_success?.Invoke();
+		}
+
+		public void OnFailure(Android.OneSignal.EmailUpdateError error)
+		{
+			if (_failure == null)
+				return;
+
+			var result = new Dictionary<string, object>() { { "message", error.Message } };
+			_failure(result);
+		}
+	}
 }
