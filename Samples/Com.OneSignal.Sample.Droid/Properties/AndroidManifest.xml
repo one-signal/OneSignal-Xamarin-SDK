@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.onesignal.sample">
-	<uses-sdk android:minSdkVersion="15" android:targetSdkVersion="28" />
+	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="28" />
 	<permission android:name="com.onesignal.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 	<uses-permission android:name="com.onesignal.sample.permission.C2D_MESSAGE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

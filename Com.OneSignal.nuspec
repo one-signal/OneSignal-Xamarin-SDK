@@ -12,14 +12,16 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>OneSignal for Xamarin</description>
         <summary>OneSignal is a free push notification service for mobile apps. This plugin makes it easy to integrate your Xamarin app with OneSignal</summary>
-        <tags>xamarin, monodroid, C#, OneSignal, push</tags>
+        <tags>xamarin, android, ios, monodroid, C#, OneSignal, push</tags>
         <dependencies>
-            <group targetFramework="MonoAndroid">
-                <dependency id="Xamarin.Android.Support.v4" version="26.0.2" />
-                <dependency id="Xamarin.Android.Support.v7.CardView" version="26.0.2" />
-                <dependency id="Xamarin.Android.Support.CustomTabs" version="26.0.2" />
+            <group targetFramework="MonoAndroid10">
+                <dependency id="Xamarin.Android.Support.v4" version="28.0.0.3" />
+                <dependency id="Xamarin.Android.Support.v7.CardView" version="28.0.0.3" />
+                <dependency id="Xamarin.Android.Support.CustomTabs" version="28.0.0.3" />
                 <dependency id="Xamarin.GooglePlayServices.Ads.Identifier" version="71.1600.0" />
                 <dependency id="Xamarin.Firebase.Messaging" version="71.1740.0" />
+            </group>
+            <group targetFramework="Xamarin.iOS10">
             </group>
             <group targetFramework="netstandard1.0">
                 <dependency id="NETStandard.Library" version="1.6.1" />

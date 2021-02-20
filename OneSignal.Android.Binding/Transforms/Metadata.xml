@@ -1,10 +1,6 @@
 ﻿<metadata>
 	<attr path="/api/package[@name='com.onesignal']" name="managedName">Com.OneSignal.Android</attr>
 
-    <!-- NotificationExtenderService does not inherit from IntentService but JobIntentService,
-             but using JobIntentService throws build errors as it is package-private. -->
-    <attr path="/api/package[@name='com.onesignal']/class[@name='NotificationExtenderService']" name="extends">Android.App.IntentService</attr>
-
     <!-- TODO: See if we can be more limiting to what is exported with the NotificationExtenderService with the following: -->
     <!-- <attr path="/api/package[@name='com.onesignal']/class[@name='NotificationExtenderService']" name="extends">Com.OneSignal.Android.JobIntentService</attr> -->
     <!-- <remove-node path="/api/package[@name='com.onesignal']/class[@name='NotificationExtenderService']/method[not(@name='onNotificationProcessing' or @name='displayNotification')]" /> -->
