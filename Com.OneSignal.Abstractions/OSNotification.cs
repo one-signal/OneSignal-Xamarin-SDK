@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace Com.OneSignal.Abstractions
 {
     public class OSNotification
@@ -21,5 +23,6 @@ namespace Com.OneSignal.Abstractions
         public int androidNotificationId;
         public DisplayType displayType;
         public OSNotificationPayload payload;
-    }
+        public List<OSNotificationPayload> groupedNotifications;
+   }
 }

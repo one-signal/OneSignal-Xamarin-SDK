@@ -34,52 +34,67 @@ namespace Com.OneSignal
         public static OSNotification OSNotificationToNative(Android.OSNotification notif)
         {
             var notification = new OSNotification();
+
+            notification.groupedNotifications = new List<OSNotificationPayload>();
+            if (notif.GroupedNotifications != null)
+            {
+               foreach (Android.OSNotificationPayload payload in notif.GroupedNotifications)
+               {
+                  OSNotificationPayload nativePayload = OSNotificationPayloadToNative(payload);
+                  notification.groupedNotifications.Add(nativePayload);
+               }
+            }
+
             notification.shown = notif.Shown;
             notification.androidNotificationId = notif.AndroidNotificationId;
-            notif.GroupedNotifications = notif.GroupedNotifications;
-            notif.IsAppInFocus = notif.IsAppInFocus;
+            notification.isAppInFocus = notif.IsAppInFocus;
+            notification.payload = OSNotificationPayloadToNative(notif.Payload);
 
-            notification.payload = new OSNotificationPayload();
+            return notification;
+        }
 
+        public static OSNotificationPayload OSNotificationPayloadToNative(Android.OSNotificationPayload payload)
+        {
+            OSNotificationPayload nativePayload = new OSNotificationPayload();
 
-            notification.payload.actionButtons = new List<Dictionary<string, object>>();
-            if (notif.Payload.ActionButtons != null)
+            nativePayload.actionButtons = new List<Dictionary<string, object>>();
+            if (payload.ActionButtons != null)
             {
-                foreach (Android.OSNotificationPayload.ActionButton button in notif.Payload.ActionButtons)
+                foreach (Android.OSNotificationPayload.ActionButton button in payload.ActionButtons)
                 {
                     var d = new Dictionary<string, object>();
                     d.Add(button.Id, button.Text);
-                    notification.payload.actionButtons.Add(d);
+                    nativePayload.actionButtons.Add(d);
                 }
             }
 
-            notification.payload.additionalData = new Dictionary<string, object>();
-            if (notif.Payload.AdditionalData != null)
+            nativePayload.additionalData = new Dictionary<string, object>();
+            if (payload.AdditionalData != null)
             {
-                var iterator = notif.Payload.AdditionalData.Keys();
+                var iterator = payload.AdditionalData.Keys();
                 while (iterator.HasNext)
                 {
                     var key = (string)iterator.Next();
-                    notification.payload.additionalData.Add(key, notif.Payload.AdditionalData.Get(key));
+                    nativePayload.additionalData.Add(key, payload.AdditionalData.Get(key));
                 }
             }
 
-            notification.payload.body = notif.Payload.Body;
-            notification.payload.launchURL = notif.Payload.LaunchURL;
-            notification.payload.notificationID = notif.Payload.NotificationID;
-            notification.payload.sound = notif.Payload.Sound;
-            notification.payload.title = notif.Payload.Title;
-            notification.payload.bigPicture = notif.Payload.BigPicture;
-            notification.payload.fromProjectNumber = notif.Payload.FromProjectNumber;
-            notification.payload.groupMessage = notif.Payload.GroupKey;
-            notification.payload.groupMessage = notif.Payload.GroupMessage;
-            notification.payload.largeIcon = notif.Payload.LargeIcon;
-            notification.payload.ledColor = notif.Payload.LedColor;
-            notification.payload.lockScreenVisibility = notif.Payload.LockScreenVisibility;
-            notification.payload.smallIcon = notif.Payload.SmallIcon;
-            notification.payload.smallIconAccentColor = notif.Payload.SmallIconAccentColor;
+            nativePayload.body = payload.Body;
+            nativePayload.launchURL = payload.LaunchURL;
+            nativePayload.notificationID = payload.NotificationID;
+            nativePayload.sound = payload.Sound;
+            nativePayload.title = payload.Title;
+            nativePayload.bigPicture = payload.BigPicture;
+            nativePayload.fromProjectNumber = payload.FromProjectNumber;
+            nativePayload.groupMessage = payload.GroupKey;
+            nativePayload.groupMessage = payload.GroupMessage;
+            nativePayload.largeIcon = payload.LargeIcon;
+            nativePayload.ledColor = payload.LedColor;
+            nativePayload.lockScreenVisibility = payload.LockScreenVisibility;
+            nativePayload.smallIcon = payload.SmallIcon;
+            nativePayload.smallIconAccentColor = payload.SmallIconAccentColor;
 
-            return notification;
+            return nativePayload;
         }
     }
 }
