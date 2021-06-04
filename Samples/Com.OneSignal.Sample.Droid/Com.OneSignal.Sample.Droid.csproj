@@ -165,9 +165,6 @@
     <Reference Include="Xamarin.Firebase.Messaging">
       <HintPath>..\..\packages\Xamarin.Firebase.Messaging.71.1740.0\lib\monoandroid90\Xamarin.Firebase.Messaging.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Ads.Identifier">
-      <HintPath>..\..\packages\Xamarin.GooglePlayServices.Ads.Identifier.71.1600.0\lib\monoandroid90\Xamarin.GooglePlayServices.Ads.Identifier.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -251,5 +248,4 @@
   <Import Project="..\..\packages\Xamarin.Firebase.Iid.Interop.71.1601.0\build\MonoAndroid90\Xamarin.Firebase.Iid.Interop.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.Iid.Interop.71.1601.0\build\MonoAndroid90\Xamarin.Firebase.Iid.Interop.targets')" />
   <Import Project="..\..\packages\Xamarin.Firebase.Iid.71.1710.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.Iid.71.1710.0\build\MonoAndroid90\Xamarin.Firebase.Iid.targets')" />
   <Import Project="..\..\packages\Xamarin.Firebase.Messaging.71.1740.0\build\MonoAndroid90\Xamarin.Firebase.Messaging.targets" Condition="Exists('..\..\packages\Xamarin.Firebase.Messaging.71.1740.0\build\MonoAndroid90\Xamarin.Firebase.Messaging.targets')" />
-  <Import Project="..\..\packages\Xamarin.GooglePlayServices.Ads.Identifier.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Ads.Identifier.targets" Condition="Exists('..\..\packages\Xamarin.GooglePlayServices.Ads.Identifier.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Ads.Identifier.targets')" />
 </Project>
